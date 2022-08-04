@@ -2,6 +2,8 @@
 node_modules
 /dist
 
+# credentials file
+src/components/credentials.js
 
 # local env files
 .env.local

@@ -6,6 +6,7 @@ node_modules
 src/components/credentials.js
 
 # local env files
+.env
 .env.local
 .env.*.local
 

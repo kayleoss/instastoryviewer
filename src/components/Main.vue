@@ -21,7 +21,6 @@
 
 <script>
 import axios from "axios";
-import {creds} from "./credentials.js";
 
 export default {
   name: "InstaStoryViewer",
@@ -39,11 +38,11 @@ export default {
       
       const options = {
         method: 'GET',
-        url: creds.HOST_URL,
+        url: process.env.VUE_APP_HOST_URL,
         params: {ig: this.username, response_type: 'story'},
         headers: {
-          'X-RapidAPI-Key': creds.API_KEY,
-          'X-RapidAPI-Host': creds.API_HOST
+          'X-RapidAPI-Key': process.env.VUE_APP_API_KEY,
+          'X-RapidAPI-Host': process.env.VUE_APP_API_HOST
         }
       };
 

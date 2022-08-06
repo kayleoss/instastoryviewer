@@ -3,7 +3,7 @@
   <Main />
   <hr>
   <p>View &amp; download instagram stories anonymously</p>
-  <small>InstaStory Viewer is completely free to use and ad-free, however <a href="https://www.paypal.com/donate/?business=TY6AGAGFKLC2U&no_recurring=0&currency_code=CAD" target="_blank">donations are always appreciated</a>.</small>
+  <small>InstaStory Viewer is completely free to use however <a href="https://www.paypal.com/donate/?business=TY6AGAGFKLC2U&no_recurring=0&currency_code=CAD" target="_blank">donations are always appreciated</a>.</small>
 </template>
 
 <script>

@@ -5,16 +5,21 @@
     placeholder="Enter Instagram Username"
     name="username"
     class="inputbox"
+    autocomplete="off"
+    autocorrect="off"
+    autocapitalize="off"
   />
   <button @click="getUserStories" type="submit">View Story</button>
   <p class="errortext">{{errorText}}</p>
   <div ref="loading" class="hidden loading-banner">
     <p>Loading.. Please wait</p>
   </div>
-  <ul class="stories">
+  <ul class="stories" ref="stories">
     <li v-for="(story, index) in stories" :key="index">
       <p>{{ new Date(story.taken_at * 1000) }}</p>
-      <a :href="story.contentUrl" target="_blank" class="storybutton">Click to view story {{index + 1}}</a>
+      <a :href="story.contentUrl" target="_blank" class="storybutton">
+        <img :src="story.contentUrl" alt="" crossorigin="anonymous" />
+      </a>
     </li>
   </ul>
 </template>
@@ -33,13 +38,15 @@ export default {
   methods: {
     getUserStories () {
       const loader = this.$refs.loading;
+      const storiesbox = this.$refs.stories;
       this.errorText = "";
       loader.classList.remove('hidden');
+      storiesbox.classList.add('hidden')
       
       const options = {
         method: 'GET',
         url: process.env.VUE_APP_HOST_URL,
-        params: {ig: this.username, response_type: 'story'},
+        params: {ig: this.username.toLowerCase(), response_type: 'story', corsEnabled: 'true'},
         headers: {
           'X-RapidAPI-Key': process.env.VUE_APP_API_KEY,
           'X-RapidAPI-Host': process.env.VUE_APP_API_HOST
@@ -50,23 +57,26 @@ export default {
         .request(options)
         .then((response) => {
           loader.classList.add('hidden');
-          if (response.data[0].story.data.length > 0) {
-            response.data[0].story.data.forEach(function(story){
+          storiesbox.classList.remove('hidden')
+          let storyData = response.data[0].story.data;
+
+          if (storyData.length > 0) {
+            storyData.forEach(function(story){
               if(story.media_type == 2) {
                 story.contentUrl = story.video_versions[0].url
               } else {
                 story.contentUrl = story.image_versions2.candidates[0].url
               }
             })
-            this.stories = response.data[0].story.data;
+            this.stories = storyData;
           } else {
             this.errorText = "The user has no stories available or is a private account.";
           }
         })
         .catch((error) => {
-          this.errorText = error;
+          this.errorText = "An error occurred. Check the username is spelled correctly. " + error;
         });
-    },
+    }
   }
 };
 </script>
@@ -113,13 +123,10 @@ ul {
   padding: 5px;
 }
 .storybutton {
-  border: 1px solid black;
-  border-radius: 15px;
   display: inline-block;
-  padding: 15px;
-  text-decoration: none;
-  font-weight: 700;
-  background: lightgreen;
-  color: white;
+  width: 20rem;
+}
+.storybutton img {
+  width: 100%;
 }
 </style>

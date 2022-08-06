@@ -18,7 +18,11 @@
     <li v-for="(story, index) in stories" :key="index">
       <p>{{ new Date(story.taken_at * 1000) }}</p>
       <a :href="story.contentUrl" target="_blank" class="storybutton">
-        <img :src="story.contentUrl" alt="" crossorigin="anonymous" />
+        <div v-if="story.isVideo == true">
+          <img :src="require('../assets/play-button.png')" class="playbutton" />
+          <video :src="story.contentUrl" alt="" crossorigin="anonymous" />
+        </div>
+        <img v-else :src="story.contentUrl" alt="" crossorigin="anonymous" class="storyimg" />
       </a>
     </li>
   </ul>
@@ -64,6 +68,7 @@ export default {
             storyData.forEach(function(story){
               if(story.media_type == 2) {
                 story.contentUrl = story.video_versions[0].url
+                story.isVideo = true;
               } else {
                 story.contentUrl = story.image_versions2.candidates[0].url
               }
@@ -126,7 +131,17 @@ ul {
   display: inline-block;
   width: 20rem;
 }
-.storybutton img {
+.storybutton .storyimg, .storybutton video {
   width: 100%;
+}
+.playbutton {
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  z-index: 100000000;
+  right: 0;
+  left: 0;
+  margin: auto;
+  margin-top: 150px;
 }
 </style>

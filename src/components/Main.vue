@@ -41,9 +41,11 @@ export default {
   },
   methods: {
     getUserStories () {
+      this.stories= []
+      this.errorText = "";
       const loader = this.$refs.loading;
       const storiesbox = this.$refs.stories;
-      this.errorText = "";
+      
       loader.classList.remove('hidden');
       storiesbox.classList.add('hidden')
       
@@ -61,7 +63,7 @@ export default {
         .request(options)
         .then((response) => {
           loader.classList.add('hidden');
-          storiesbox.classList.remove('hidden')
+          storiesbox.classList.remove('hidden');
           let storyData = response.data[0].story.data;
 
           if (storyData.length > 0) {

@@ -81,7 +81,11 @@ export default {
           }
         })
         .catch((error) => {
-          this.errorText = "An error occurred. Check the username is spelled correctly. " + error;
+          if (error.response.status == 429) {
+            this.errorText = "Too many stories have been downloaded this month, please wait until next month to try again."
+          } else {
+            this.errorText = "An error occurred. Check the username is spelled correctly. " + error;
+          }
         });
     }
   }
